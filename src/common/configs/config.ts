@@ -1,4 +1,4 @@
-import type { Config } from './config.interface';
+import type { Config } from './config.interface'
 
 const config: Config = {
   nest: {
@@ -15,16 +15,16 @@ const config: Config = {
     path: 'api',
   },
   graphql: {
-    playgroundEnabled: true,
+    playgroundEnabled: false,
     debug: true,
     schemaDestination: './src/schema.graphql',
     sortSchema: true,
   },
   security: {
-    expiresIn: '2m',
-    refreshIn: '7d',
+    expiresIn: '1m', // 15m
+    refreshIn: '2m', // 2d
     bcryptSaltOrRound: 10,
   },
-};
+}
 
-export default (): Config => config;
+export default (): Config => config
