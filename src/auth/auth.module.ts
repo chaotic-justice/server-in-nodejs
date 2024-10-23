@@ -8,6 +8,9 @@ import { AuthService } from './auth.service'
 import { GqlAuthGuard } from './gql-auth.guard'
 import { JwtStrategy } from './jwt.strategy'
 import { PasswordService } from './password.service'
+import { GoogleStrategy } from './google-oauth.strategy'
+import { JwtGuard } from './jwt.auth.guard'
+import { AuthController } from './auth.controller'
 
 @Module({
   imports: [
@@ -25,12 +28,15 @@ import { PasswordService } from './password.service'
       inject: [ConfigService],
     }),
   ],
+  controllers: [AuthController],
   providers: [
     AuthService,
     AuthResolver,
     JwtStrategy,
     GqlAuthGuard,
+    JwtGuard,
     PasswordService,
+    GoogleStrategy,
   ],
   exports: [GqlAuthGuard],
 })

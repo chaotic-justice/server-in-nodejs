@@ -13,6 +13,7 @@ import { PasswordService } from './password.service'
 import { SignupInput } from './dto/signup.input'
 import { Token } from './models/token.model'
 import { SecurityConfig } from '../common/configs/config.interface'
+import { OauthLoginInput } from './dto/oauth-login.input'
 
 @Injectable()
 export class AuthService {
@@ -60,12 +61,46 @@ export class AuthService {
 
     const passwordValid = await this.passwordService.validatePassword(
       password,
-      user.password,
+      user.password ?? '',
     )
 
     if (!passwordValid) {
       throw new BadRequestException('Invalid password')
     }
+
+    return this.generateTokens({
+      userId: user.id,
+    })
+  }
+
+  async oAuthLogin(userFromOauth: OauthLoginInput | null): Promise<Token> {
+    if (!userFromOauth) {
+      throw new NotFoundException(`No user found.`)
+    }
+
+    const userData = {
+      name: userFromOauth.name,
+      provider: userFromOauth.provider,
+    }
+
+    const user = await this.prisma.user.upsert({
+      where: { email: userFromOauth.email },
+      update: userData,
+      create: {
+        ...userData,
+        image: userFromOauth.picture,
+        email: userFromOauth.email,
+      },
+    })
+    // if (!user) {
+    //   user = await this.prisma.user.create({
+    //     data: {
+    //       name: userFromOauth.name,
+    //       email: userFromOauth.email,
+    //       role: 'USER',
+    //     },
+    //   })
+    // }
 
     return this.generateTokens({
       userId: user.id,
@@ -78,6 +113,7 @@ export class AuthService {
 
   getUserFromToken(token: string): Promise<User | null> {
     const decoded = this.jwtService.decode(token) ?? ''
+    console.log('get user from token', decoded)
     const id = typeof decoded === 'object' ? decoded['userId'] : decoded
     return this.prisma.user.findUnique({ where: { id } })
   }
