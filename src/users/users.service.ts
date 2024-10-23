@@ -20,6 +20,18 @@ export class UsersService {
     })
   }
 
+  // upsertUser(userId: string) {
+  //   return this.prisma.user.upsert({
+  //     where: {
+  //       id: userId,
+  //     },
+  //     update: {},
+  //     create: {
+  //       id: userId,
+  //     },
+  //   })
+  // }
+
   async changePassword(
     userId: string,
     userPassword: string,
