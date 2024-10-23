@@ -19,13 +19,15 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!')
+      expect(appController.getHello()).toBe('Hello jovanno??')
     })
   })
   describe('hello/:name', () => {
     it('should return "Hello ${name}!"', () => {
       const name = chance.name()
-      expect(appController.getHelloName(name)).toBe(`Hello ${name}!`)
+      expect(appController.getHelloName(name)).toBe(
+        `back to florence, ${name}!`,
+      )
     })
   })
 })
