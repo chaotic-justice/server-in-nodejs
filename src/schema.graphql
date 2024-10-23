@@ -40,9 +40,17 @@ type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createPost(data: CreatePostInput!): Post!
   login(data: LoginInput!): Auth!
+  oAuthLogin(data: OauthLoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateUser(data: UpdateUserInput!): User!
+}
+
+input OauthLoginInput {
+  email: String!
+  name: String
+  picture: String
+  provider: String!
 }
 
 """
@@ -101,12 +109,13 @@ enum PostOrderField {
 }
 
 type Query {
+  getUser(token: String): User!
   hello(name: String!): String!
   helloWorld: String!
   me: User!
   post: Post!
   publishedPosts(orderBy: PostOrder, query: String): PostConnection!
-  userPosts: [Post!]!
+  userPosts(userId: String!): [Post!]!
 }
 
 """User role"""
@@ -117,8 +126,7 @@ enum Role {
 
 input SignupInput {
   email: String!
-  firstname: String
-  lastname: String
+  name: String
   password: String!
 }
 
@@ -135,17 +143,15 @@ type Token {
 }
 
 input UpdateUserInput {
-  firstname: String
-  lastname: String
+  name: String
 }
 
 type User {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   email: String!
-  firstname: String
   id: ID!
-  lastname: String
+  name: String
   posts: [Post!]
   role: Role!
 

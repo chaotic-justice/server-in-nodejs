@@ -11,8 +11,7 @@ async function main() {
   const user1 = await prisma.user.create({
     data: {
       email: 'lisa@simpson.com',
-      firstname: 'Lisa',
-      lastname: 'Simpson',
+      name: 'Lisa Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       role: 'USER',
       posts: {
@@ -27,8 +26,7 @@ async function main() {
   const user2 = await prisma.user.create({
     data: {
       email: 'bart@simpson.com',
-      firstname: 'Bart',
-      lastname: 'Simpson',
+      name: 'Bart Simpson',
       role: 'ADMIN',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       posts: {
@@ -49,6 +47,9 @@ async function main() {
   })
 
   console.log({ user1, user2 })
+
+  const count = await prisma.user.count()
+  console.log('user count', count)
 }
 
 main()

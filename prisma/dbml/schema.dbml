@@ -5,13 +5,12 @@
 Table User {
   id String [pk]
   email String [unique, not null]
-  password String [not null]
-  firstname String
-  lastname String
+  password String
   name String
   emailVerified DateTime
   image String
   role Role [not null, default: 'USER']
+  provider String [default: 'local']
   accounts Account [not null]
   sessions Session [not null]
   posts Post [not null]
