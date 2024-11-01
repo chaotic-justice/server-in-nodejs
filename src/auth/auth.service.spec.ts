@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing'
-import { AuthService } from './auth.service'
-import { JwtService } from '@nestjs/jwt'
-import { PrismaService } from 'nestjs-prisma'
 import { ConfigService } from '@nestjs/config'
-import { PasswordService } from './password.service'
+import { JwtService } from '@nestjs/jwt'
+import { Test, TestingModule } from '@nestjs/testing'
+import { PrismaService } from 'nestjs-prisma'
+import { Mock, vi } from 'vitest'
+import { AuthService } from './auth.service'
 import { SignupInput } from './dto/signup.input'
 import { Token } from './models/token.model'
+import { PasswordService } from './password.service'
 
 describe('AuthService', () => {
   let authService: AuthService
@@ -14,21 +15,21 @@ describe('AuthService', () => {
   let jwtService: JwtService
 
   const mockJwtService = {
-    sign: jest.fn().mockReturnValue('token'),
+    sign: vi.fn().mockReturnValue('token'),
   }
 
   const mockPrismaService = {
     user: {
-      create: jest.fn(),
+      create: vi.fn(),
     },
   }
 
   const mockPasswordService = {
-    hashPassword: jest.fn(),
+    hashPassword: vi.fn(),
   }
 
   const mockConfigService = {
-    get: jest.fn(), // Mock the get method if needed
+    get: vi.fn(),
   }
 
   beforeEach(async () => {
@@ -62,9 +63,7 @@ describe('AuthService', () => {
       const hashedPassword = 'hashedPassword'
 
       // Mock the password service to return a hashed password
-      ;(passwordService.hashPassword as jest.Mock).mockResolvedValue(
-        hashedPassword,
-      )
+      ;(passwordService.hashPassword as Mock).mockResolvedValue(hashedPassword)
 
       // Mock the Prisma service to return a user object when creating a user
       const createdUser = {
@@ -73,7 +72,7 @@ describe('AuthService', () => {
         role: 'USER',
       }
 
-      const userMock = prismaService.user.create as jest.Mock
+      const userMock = prismaService.user.create as Mock
       userMock.mockResolvedValue(createdUser)
 
       // Call the createUser method
@@ -87,7 +86,6 @@ describe('AuthService', () => {
           role: 'USER',
         },
       })
-      console.log('result', result)
       expect(result).toEqual({ accessToken: 'token', refreshToken: 'token' })
       expect(jwtService.sign).toHaveBeenCalledTimes(2)
     })
@@ -99,12 +97,13 @@ describe('AuthService', () => {
       }
 
       // Mock the password service
-      ;(passwordService.hashPassword as jest.Mock).mockResolvedValue(
+      // eslint-disable-next-line prettier/prettier
+      ;;(passwordService.hashPassword as Mock).mockResolvedValue(
         'hashedPassword',
       )
 
       // Mock Prisma to throw a conflict error
-      ;(prismaService.user.create as jest.Mock).mockRejectedValue({
+      ;(prismaService.user.create as Mock).mockRejectedValue({
         code: 'P2002',
       })
 

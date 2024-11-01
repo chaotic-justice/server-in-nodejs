@@ -1,10 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing'
 import { ConfigService } from '@nestjs/config'
-import { PasswordService } from './password.service'
+import { Test, TestingModule } from '@nestjs/testing'
 import { compare } from 'bcrypt'
 import { PrismaService } from 'nestjs-prisma'
+import { Mock, vi } from 'vitest'
+import { PasswordService } from './password.service'
 
-jest.mock('bcrypt') // Mock the bcrypt module
+vi.mock('bcrypt') // Mock the bcrypt module
 
 describe('PasswordService', () => {
   let service: PasswordService
@@ -27,7 +28,7 @@ describe('PasswordService', () => {
       const hashedPassword = 'hashedPassword'
 
       // Mock the compare function to return true
-      ;(compare as jest.Mock).mockResolvedValue(true)
+      ;(compare as Mock).mockResolvedValue(true)
 
       const result = await service.validatePassword(password, hashedPassword)
       expect(result).toBe(true)
@@ -39,7 +40,7 @@ describe('PasswordService', () => {
       const hashedPassword = 'hashedPassword'
 
       // Mock the compare function to return false
-      ;(compare as jest.Mock).mockResolvedValue(false)
+      ;(compare as Mock).mockResolvedValue(false)
 
       const result = await service.validatePassword(password, hashedPassword)
       expect(result).toBe(false)

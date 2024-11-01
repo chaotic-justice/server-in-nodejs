@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
+import request from 'supertest'
 import { Chance } from 'chance'
-import { AppModule } from 'src/app.module'
+import { AppModule } from '../src/app.module'
 
 const chance = new Chance()
 
@@ -22,14 +22,14 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!')
+      .expect('Hello jovanno??')
   })
 
-  it('/hello/:name (GET)', () => {
+  it('/bye/:name (GET)', () => {
     const name = chance.name()
     return request(app.getHttpServer())
-      .get(`/hello/${name}`)
+      .get(`/bye/${name}`)
       .expect(200)
-      .expect(`Hello ${name}!`)
+      .expect(`back to florence, ${name}!`)
   })
 })

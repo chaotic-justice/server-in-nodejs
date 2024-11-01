@@ -36,7 +36,9 @@
     "prisma:studio": "npx prisma studio",
     "prisma:generate": "npx prisma generate",
     "prisma:generate:watch": "npx prisma generate --watch",
-    "test": "jest",
+    "test": "vitest -c test/vitest.config.unit.ts",
+    "test:unit": "vitest -c test/vitest.config.unit.ts",
+    "test:int": "vitest -c test/vitest.config.integration.ts",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -49,6 +51,7 @@
     "docker:seed": "docker exec -it nest-api npm run seed",
     "docker": "docker-compose up -d",
     "docker:dev": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
     "docker:build": "docker-compose build"
   },
   "dependencies": {
@@ -106,7 +109,9 @@
     "ts-loader": "9.4.4",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.2.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "unplugin-swc": "^1.5.1",
+    "vitest": "^2.1.4"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
+import request from 'supertest'
 import { Chance } from 'chance'
-import { AppModule } from 'src/app.module'
+import { AppModule } from '../src/app.module'
 
 const chance = new Chance()
 
@@ -36,5 +36,8 @@ describe('AppResolver (e2e)', () => {
         query: `{ hello(name: "${name}") }`,
       })
       .expect(200)
+      .expect((res) => {
+        expect(res.body.data.hello).toBe(`pick ${name}!`)
+      })
   })
 })

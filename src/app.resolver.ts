@@ -8,6 +8,6 @@ export class AppResolver {
   }
   @Query(() => String)
   hello(@Args('name') name: string): string {
-    return `Hello ${name}!`
+    return `pick ${name}!`
   }
 }
