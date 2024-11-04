@@ -113,7 +113,6 @@ export class AuthService {
 
   getUserFromToken(token: string): Promise<User | null> {
     const decoded = this.jwtService.decode(token) ?? ''
-    console.log('get user from token', decoded)
     const id = typeof decoded === 'object' ? decoded['userId'] : decoded
     return this.prisma.user.findUnique({ where: { id } })
   }
