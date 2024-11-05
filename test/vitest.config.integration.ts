@@ -17,11 +17,10 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: [{ find: '@', replacement: resolve(__dirname, './src') }],
-    // alias: {
-    //   '@src': './src',
-    //   '@test': './test',
-    // },
+    alias: [
+      { find: '@', replacement: resolve(__dirname, './src') },
+      { find: 'express', replacement: require.resolve('express') },
+    ],
   },
   esbuild: false,
   plugins: [swc.vite()],
