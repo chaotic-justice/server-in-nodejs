@@ -3,7 +3,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    include: ['**/*.int.spec.ts'],
+    include: ['src/**/*.int.spec.ts', 'test/*.int.spec.ts'],
     globals: true,
     alias: {
       '@src': './src',
@@ -11,6 +11,11 @@ export default defineConfig({
     },
     root: './',
     setupFiles: ['./test/helpers/setup.ts'],
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
   },
   resolve: {
     alias: {

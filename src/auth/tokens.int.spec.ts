@@ -27,8 +27,8 @@ describe('jwt tokens should be valid', async () => {
 
   const signupInput = {
     data: {
-      email: 'test@yah.com',
-      name: 'testusername',
+      email: 'me-test@yah.com',
+      name: 'me-test',
       password: 'testpassword',
     },
   }
@@ -98,8 +98,8 @@ describe('jwt tokens should be valid', async () => {
       `,
       })
     expect(me).toEqual({
-      name: 'testusername',
-      email: 'test@yah.com',
+      name: 'me-test',
+      email: 'me-test@yah.com',
       role: 'USER',
     })
   })

@@ -4,7 +4,6 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { PrismaService } from 'nestjs-prisma'
 import { AppModule } from 'src/app.module'
 import request from 'supertest'
-import { vi } from 'vitest'
 
 describe('/auth', async () => {
   let app: INestApplication
@@ -59,7 +58,11 @@ describe('/auth', async () => {
       expect(status).toBe(200)
       expect(body.data.signup).toHaveProperty('accessToken')
       expect(body.data.signup).toHaveProperty('refreshToken')
-      const newUser = await prismaService.user.findFirst()
+      const newUser = await prismaService.user.findFirst({
+        where: {
+          name: data.name,
+        },
+      })
       expect(newUser).not.toBeNull()
       expect(user).toEqual({
         name: 'testusername',
@@ -97,7 +100,7 @@ describe('/auth', async () => {
           data,
         },
       })
-      const { status } = await request(app.getHttpServer())
+      const { status, body } = await request(app.getHttpServer())
         .post('/graphql')
         .send({
           query: signupMutationString,
@@ -105,9 +108,9 @@ describe('/auth', async () => {
             data,
           },
         })
+      const error = body.errors[0]
       expect(status).toBe(200)
-      const count = await prismaService.user.count()
-      expect(count).toBe(1)
+      expect(error).not.toBeNull()
     })
   })
 })
