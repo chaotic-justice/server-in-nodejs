@@ -4,8 +4,6 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 # source $DIR/setenv.sh
 # Set environment variables from GitHub Secrets
 export DATABASE_URL=${{ secrets.DATABASE_URL }}
-export JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
-export JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
 
 docker-compose -f docker-compose.testing.yml up -d
 echo '🟡 - Waiting for database to be ready...'
