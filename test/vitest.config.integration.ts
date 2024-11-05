@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import swc from 'unplugin-swc'
 import { defineConfig } from 'vitest/config'
 
@@ -18,10 +19,11 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: {
-      '@src': './src',
-      '@test': './test',
-    },
+    alias: [{ find: '@', replacement: resolve(__dirname, './src') }],
+    // alias: {
+    //   '@src': './src',
+    //   '@test': './test',
+    // },
   },
   plugins: [swc.vite()],
 })

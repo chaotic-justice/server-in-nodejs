@@ -9,10 +9,7 @@ on:
       - main
 
 env:
-  DATABASE_URL: postgres://postgres:passw00d@localhost:5432/nest-db
-  PORT: 3000
-  JWT_ACCESS_SECRET: rasp3028*Q()berry
-  JWT_REFRESH_SECRET: rasp3028*Qberry
+  PORT: ${{ secrets.PORT }}
 
 jobs:
   unit-tests:
@@ -23,10 +20,14 @@ jobs:
       - name: Run unit tests
         run: pnpm test:unit
   integration-tests:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - uses: ./.github/actions/build
-        - uses: ./.github/actions/docker-compose
-        - name: Run tests
-          run: pnpm run test:backend:int
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/docker-compose
+      - name: Run tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+        run: pnpm run test:backend:int
