@@ -1,21 +1,27 @@
+import { resolve } from 'path'
 import swc from 'unplugin-swc'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  root: './',
   test: {
-    include: ['**/*.int-spec.ts'],
+    include: ['src/**/*.int.spec.ts', 'test/*.int.spec.ts'],
     globals: true,
-    alias: {
-      '@src': './src',
-      '@test': './test',
+    environment: 'node',
+    includeSource: [resolve(__dirname, '.')],
+    setupFiles: ['./test/helpers/setup.ts'],
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
     },
-    root: './',
   },
   resolve: {
-    alias: {
-      '@src': './src',
-      '@test': './test',
-    },
+    alias: [
+      { find: '@', replacement: resolve(__dirname, './src') },
+      { find: 'express', replacement: require.resolve('express') },
+    ],
   },
+  esbuild: false,
   plugins: [swc.vite()],
 })
