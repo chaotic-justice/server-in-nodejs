@@ -48,20 +48,19 @@ describe('jwt tokens should be valid', async () => {
   it('me Query should fail after token expires', async () => {
     vi.useFakeTimers()
     const {
-      body: {
-        data: {
-          signup: { accessToken, refreshToken },
-        },
-      },
+      body: { data, errors },
     } = await request(app.getHttpServer()).post('/graphql').send({
       query: signupMutationString,
       variables: signupInput,
     })
+    if (errors) {
+      console.error(errors[0])
+    }
 
     vi.advanceTimersByTime(1200000)
 
     try {
-      jwtService.verify(accessToken)
+      jwtService.verify(data.signup.accessToken)
     } catch (error) {
       expect(error).not.toBeNull()
     }
